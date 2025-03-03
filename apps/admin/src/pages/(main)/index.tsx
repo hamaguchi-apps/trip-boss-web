@@ -70,7 +70,7 @@ interface DayItinerary {
   coffeeShop?: CoffeeShop
 }
 
-interface TripDetails {
+export interface TripDetails {
   outboundFlight: Flight | null
   returnFlight: Flight | null
   neighborhoods: Neighborhood[]
@@ -147,7 +147,7 @@ export function Component() {
         destination: formData.destination,
         departureDate,
         returnDate,
-        useMock: true,
+        useMock: false,
       })
 
       setTripDetails(tripDetails)

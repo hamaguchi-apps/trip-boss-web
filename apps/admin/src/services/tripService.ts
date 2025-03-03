@@ -1,6 +1,7 @@
+import axios from "axios"
+
 import { getMockTripDetails } from "../mocks/tripDetailsMock"
-import { ITINERARY_SYSTEM_PROMPT, ITINERARY_USER_PROMPT } from "../prompts/itineraryPrompt"
-import type { TripDetails } from "../types"
+import type { TripDetails } from "../pages/(main)/index"
 
 interface GetTripDetailsParams {
   origin: string
@@ -24,26 +25,130 @@ export const getTripDetails = async ({
   }
 
   try {
-    // TODO: Implement actual OpenAI API call
-    // const userPrompt = ITINERARY_USER_PROMPT
-    //   .replace("{origin}", origin)
-    //   .replace("{destination}", destination)
-    //   .replace("{departureDate}", departureDate.toISOString().split("T")[0])
-    //   .replace("{returnDate}", returnDate.toISOString().split("T")[0])
-    //   // TODO: Add actual flight and location data
-    //   .replace("{flightData}", "")
-    //   .replace("{locationData}", "")
+    const response = await axios.post("https://apigql-bravo.hamaguchi.cloud/v1/graphql", {
+      query: `
+        mutation getItinerary($payload: ItineraryGeneratorInput!) {
+          generateItinerary(payload: $payload) {
+            activities {
+              address
+              description
+              endTime
+              name
+              review {
+                count
+                score
+              }
+              scheduledDate
+              startTime
+              websiteUrl
+            }
+            dailyItinerary {
+              activities {
+                address
+                description
+                endTime
+                name
+                review {
+                  count
+                  score
+                }
+                scheduledDate
+                startTime
+                websiteUrl
+              }
+              coffeeShop {
+                address
+                description
+                googleReviewsUrl
+                name
+                neighborhood
+                photosUrl
+                review {
+                  count
+                  score
+                }
+                websiteUrl
+              }
+              date
+            }
+            error
+            loading
+            neighborhoods {
+              coffeeShops {
+                address
+                description
+                googleReviewsUrl
+                name
+                neighborhood
+                photosUrl
+                review {
+                  count
+                  score
+                }
+                websiteUrl
+              }
+              name
+            }
+            outboundFlight {
+              airline
+              arrivalAirport {
+                city
+                country
+                id
+                name
+              }
+              arrivalTime
+              departureAirport {
+                city
+                country
+                id
+                name
+              }
+              departureTime
+              duration
+              flightNumber
+              price
+            }
+            returnFlight {
+              airline
+              arrivalAirport {
+                city
+                country
+                id
+                name
+              }
+              arrivalTime
+              departureAirport {
+                city
+                country
+                id
+                name
+              }
+              departureTime
+              duration
+              flightNumber
+              price
+            }
+          }
+        }
+      `,
+      operationName: "getItinerary",
+      variables: {
+        payload: {
+          origin,
+          destination,
+          departureDate: departureDate.toISOString().split("T")[0],
+          arrivalDate: returnDate.toISOString().split("T")[0],
+        },
+      },
+    }, {
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "insomnia/10.0.0",
+      },
+    })
 
-    // TODO: Make OpenAI API call here
-    // const response = await openai.createChatCompletion({
-    //   model: "gpt-4",
-    //   messages: [
-    //     { role: "system", content: ITINERARY_SYSTEM_PROMPT },
-    //     { role: "user", content: userPrompt }
-    //   ]
-    // })
-
-    throw new Error("Real implementation not yet available")
+    return response.data.data.generateItinerary
   } catch (error) {
     console.error("Error fetching trip details:", error)
     throw error
