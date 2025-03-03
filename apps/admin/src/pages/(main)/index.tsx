@@ -172,13 +172,13 @@ export function Component() {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <div>
               <label htmlFor="origin" className="block text-sm font-medium text-gray-700">
-                Origin City
+                Origin Airport Code
               </label>
               <input
                 type="text"
                 id="origin"
                 name="origin"
-                placeholder="e.g., New York City, NY"
+                placeholder="e.g., JFK"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 value={formData.origin}
                 onChange={(e) => setFormData({ ...formData, origin: e.target.value })}
@@ -188,13 +188,13 @@ export function Component() {
 
             <div>
               <label htmlFor="destination" className="block text-sm font-medium text-gray-700">
-                Destination City
+                Destination Airport Code
               </label>
               <input
                 type="text"
                 id="destination"
                 name="destination"
-                placeholder="e.g., Los Angeles, CA"
+                placeholder="e.g., LAX"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 value={formData.destination}
                 onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
