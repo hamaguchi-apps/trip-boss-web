@@ -144,7 +144,6 @@ export const getTripDetails = async ({
     }, {
       headers: {
         "Content-Type": "application/json",
-        "User-Agent": "insomnia/10.0.0",
       },
     })
 
