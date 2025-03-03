@@ -25,7 +25,7 @@ export const getTripDetails = async ({
   }
 
   try {
-    const response = await axios.post("https://apigql-bravo.hamaguchi.cloud/v1/graphql", {
+    const response = await axios.post(import.meta.env.VITE_API_GRAPHQL_URL, {
       query: `
         mutation getItinerary($payload: ItineraryGeneratorInput!) {
           generateItinerary(payload: $payload) {
